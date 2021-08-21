@@ -20,7 +20,7 @@ vars:
   appname: nats
   basepath:
     sh: pwd
-  apppath: '{{.basepath}}/../apps/{{.appname}}'
+  apppath: '{{.basepath}}/../../cmd/{{.appname}}'
   configpath: '{{.basepath}}/config/config.json'
   applinux: '{{.appname}}linux'
   nativeapp: '{{.appname}}native'
@@ -33,6 +33,8 @@ vars:
 dotenv: ['./config/env/.ENV']
 
 tasks:
+  default:
+    desc: To show tasks use task -l
   build:
     desc: build native and linux apps for running in novavms
     dir: '{{.apppath}}'
