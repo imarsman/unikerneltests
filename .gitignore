@@ -13,3 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+build/nats/config/env/.ENV
+build/nats/config/env/nanovms-321303-d3583d1954b4.json
+build/nats/config/config.json
+**/*.pem
+cmd/nats/config/config.yaml
