@@ -19,10 +19,11 @@ var logger *log.Logger
 var client *logging.Client
 var logName string
 
-// Logger get reference to logger
-// func Logger() *log.Logger {
-// 	return logger
-// }
+var debugLogger *log.Logger
+var infoLogger *log.Logger
+var alertLogger *log.Logger
+var warnLogger *log.Logger
+var errorLogger *log.Logger
 
 func flush() {
 	err := cloudLogger.Flush()
@@ -34,7 +35,7 @@ func flush() {
 func init() {
 	ctx := context.Background()
 
-	// Sets your Google Cloud Platform project ID.
+	// Use configured project ID for logs
 	projectID := config.Config().ProjectID
 
 	var err error
@@ -44,19 +45,21 @@ func init() {
 		log.Fatalf("Failed to create client: %v", err)
 	}
 
-	// ctx2 := context.Background()
-	// err = client.Ping(ctx2)
-	// fmt.Println("error", err)
-	// Sets the name of the log to write to.
 	logName = config.Config().LogName
 	cloudLogger = client.Logger(logName)
+
+	debugLogger = cloudLogger.StandardLogger(logging.Debug)
+	infoLogger = cloudLogger.StandardLogger(logging.Info)
+	alertLogger = cloudLogger.StandardLogger(logging.Alert)
+	warnLogger = cloudLogger.StandardLogger(logging.Warning)
+	errorLogger = cloudLogger.StandardLogger(logging.Error)
 
 	go func() {
 		stop := make(chan os.Signal, 1)
 		signal.Notify(stop, os.Interrupt)
 		signal.Notify(stop, syscall.SIGTERM)
 
-		fmt.Println("waiting")
+		// Wait for signal then close logging client
 		<-stop
 
 		client.Close()
@@ -65,35 +68,25 @@ func init() {
 
 // Debug make a debug log entry
 func Debug(msg ...string) {
-	stdL := cloudLogger.StandardLogger(logging.Debug)
-	stdL.Println(msg)
-	// cloudLogger.Flush()
+	debugLogger.Println(msg)
 }
 
 // Info make an info log entry
 func Info(msg ...string) {
-	stdL := cloudLogger.StandardLogger(logging.Info)
-	stdL.Println(msg)
-	// cloudLogger.Flush()
+	infoLogger.Println(msg)
 }
 
 // Alert make an alert log entry
 func Alert(msg ...string) {
-	stdL := cloudLogger.StandardLogger(logging.Alert)
-	stdL.Println(msg)
-	// cloudLogger.Flush()
+	alertLogger.Println(msg)
 }
 
 // Warn log a warning entry
 func Warn(msg ...string) {
-	stdL := cloudLogger.StandardLogger(logging.Warning)
-	stdL.Println(msg)
-	// cloudLogger.Flush()
+	warnLogger.Println(msg)
 }
 
 // Error log an error entry
 func Error(msg ...string) {
-	stdL := cloudLogger.StandardLogger(logging.Error)
-	stdL.Println(msg)
-	// cloudLogger.Flush()
+	errorLogger.Println(msg)
 }
