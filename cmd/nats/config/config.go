@@ -14,8 +14,15 @@ var config *Container
 
 // Container config for app
 type Container struct {
-	ProjectID string `yaml:"projectid"`
-	LogName   string `yaml:"logname"`
+	Cloud     string   `yaml:"cloud"`
+	ProjectID string   `yaml:"projectid"`
+	Loging    *Logging `yaml:"logging"`
+}
+
+// Logging settings tied to logging
+type Logging struct {
+	Name  string `yaml:"name"`
+	Level string `yaml:"level"`
 }
 
 // Config get loaded config

@@ -3,8 +3,9 @@ module github.com/imarsman/unikerneltests
 go 1.16
 
 require (
-	cloud.google.com/go v0.93.3 // indirect
+	cloud.google.com/go v0.93.3
 	cloud.google.com/go/logging v1.4.2
+	github.com/davecgh/go-spew v1.1.0
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/matryer/is v1.4.0
 	golang.org/x/mod v0.5.0 // indirect

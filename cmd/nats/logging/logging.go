@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"cloud.google.com/go/logging"
@@ -14,10 +15,27 @@ import (
 
 // https://cloud.google.com/logging/docs/reference/libraries#linux-or-macos
 
+const (
+	levelDebug = iota
+	levelInfo
+	levelAlert
+	levelWarn
+	levelError
+)
+
+const (
+	debugLevelName = "debug"
+	infoLevelName  = "info"
+	alertLevelName = "alert"
+	warnLevelName  = "warn"
+	errorLevelName = "error"
+)
+
 var cloudLogger *logging.Logger
 var logger *log.Logger
 var client *logging.Client
 var logName string
+var logLevel int
 
 var debugLogger *log.Logger
 var infoLogger *log.Logger
@@ -45,8 +63,23 @@ func init() {
 		log.Fatalf("Failed to create client: %v", err)
 	}
 
-	logName = config.Config().LogName
+	logName = config.Config().Loging.Name
 	cloudLogger = client.Logger(logName)
+	level := config.Config().Loging.Level
+	logLevel = 0
+
+	switch strings.ToUpper(level) {
+	case debugLevelName:
+		logLevel = levelDebug
+	case infoLevelName:
+		logLevel = levelInfo
+	case alertLevelName:
+		logLevel = levelAlert
+	case warnLevelName:
+		logLevel = levelWarn
+	case errorLevelName:
+		logLevel = levelError
+	}
 
 	debugLogger = cloudLogger.StandardLogger(logging.Debug)
 	infoLogger = cloudLogger.StandardLogger(logging.Info)
@@ -68,25 +101,35 @@ func init() {
 
 // Debug make a debug log entry
 func Debug(msg ...string) {
-	debugLogger.Println(msg)
+	if logLevel >= levelDebug {
+		debugLogger.Println(msg)
+	}
 }
 
 // Info make an info log entry
 func Info(msg ...string) {
-	infoLogger.Println(msg)
+	if logLevel >= levelInfo {
+		infoLogger.Println(msg)
+	}
 }
 
 // Alert make an alert log entry
 func Alert(msg ...string) {
-	alertLogger.Println(msg)
+	if logLevel >= levelAlert {
+		alertLogger.Println(msg)
+	}
 }
 
 // Warn log a warning entry
 func Warn(msg ...string) {
-	warnLogger.Println(msg)
+	if logLevel >= levelWarn {
+		warnLogger.Println(msg)
+	}
 }
 
 // Error log an error entry
 func Error(msg ...string) {
-	errorLogger.Println(msg)
+	if logLevel >= levelError {
+		errorLogger.Println(msg)
+	}
 }

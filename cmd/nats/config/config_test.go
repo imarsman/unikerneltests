@@ -3,6 +3,7 @@ package config
 import (
 	"testing"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/matryer/is"
 )
 
@@ -10,5 +11,6 @@ import (
 func TestCall(t *testing.T) {
 	is := is.New(t)
 	is.True(Config() != nil)
-	t.Logf("config %+v", Config())
+	c := Config()
+	t.Log("config", spew.Sprintf("%+v", c))
 }
