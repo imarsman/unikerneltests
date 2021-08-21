@@ -68,7 +68,7 @@ func init() {
 	level := config.Config().Loging.Level
 	logLevel = 0
 
-	switch strings.ToUpper(level) {
+	switch strings.ToLower(level) {
 	case debugLevelName:
 		logLevel = levelDebug
 	case infoLevelName:
