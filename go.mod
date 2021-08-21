@@ -5,9 +5,12 @@ go 1.16
 require (
 	cloud.google.com/go v0.93.3
 	cloud.google.com/go/logging v1.4.2
-	github.com/davecgh/go-spew v1.1.0
+	github.com/davecgh/go-spew v1.1.1
+	github.com/go-playground/validator/v10 v10.9.0
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/matryer/is v1.4.0
+	github.com/nats-io/nats-streaming-server v0.22.1
+	github.com/nats-io/nats.go v1.11.1-0.20210623165838-4b75fc59ae30
 	golang.org/x/mod v0.5.0 // indirect
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f // indirect

@@ -81,12 +81,14 @@ func init() {
 		logLevel = levelError
 	}
 
+	// Set up loggers for different log levels
 	debugLogger = cloudLogger.StandardLogger(logging.Debug)
 	infoLogger = cloudLogger.StandardLogger(logging.Info)
 	alertLogger = cloudLogger.StandardLogger(logging.Alert)
 	warnLogger = cloudLogger.StandardLogger(logging.Warning)
 	errorLogger = cloudLogger.StandardLogger(logging.Error)
 
+	// Wait for signal and exit cleanly
 	go func() {
 		stop := make(chan os.Signal, 1)
 		signal.Notify(stop, os.Interrupt)
@@ -101,35 +103,35 @@ func init() {
 
 // Debug make a debug log entry
 func Debug(msg ...string) {
-	if logLevel >= levelDebug {
+	if logLevel >= levelDebug { // Check log level
 		debugLogger.Println(msg)
 	}
 }
 
 // Info make an info log entry
 func Info(msg ...string) {
-	if logLevel >= levelInfo {
+	if logLevel >= levelInfo { // Check log level
 		infoLogger.Println(msg)
 	}
 }
 
 // Alert make an alert log entry
 func Alert(msg ...string) {
-	if logLevel >= levelAlert {
+	if logLevel >= levelAlert { // Check log level
 		alertLogger.Println(msg)
 	}
 }
 
 // Warn log a warning entry
 func Warn(msg ...string) {
-	if logLevel >= levelWarn {
+	if logLevel >= levelWarn { // Check log level
 		warnLogger.Println(msg)
 	}
 }
 
 // Error log an error entry
 func Error(msg ...string) {
-	if logLevel >= levelError {
+	if logLevel >= levelError { // Check log level
 		errorLogger.Println(msg)
 	}
 }
