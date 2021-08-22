@@ -1,8 +1,6 @@
 package instance
 
 import (
-	"fmt"
-
 	// Lilely to be added to Go
 	// https://github.com/golang/go/issues/46518
 	"inet.af/netaddr"
@@ -51,6 +49,6 @@ func NewGroupInstances() []*Instance {
 }
 
 func init() {
-	ip, _ := netaddr.ParseIP("127.0.0.1")
-	fmt.Println("ip", ip.String())
+	// ip, _ := netaddr.ParseIP("127.0.0.1")
+	// fmt.Println("ip", ip.String())
 }

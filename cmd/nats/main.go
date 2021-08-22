@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/imarsman/unikerneltests/cmd/nats/cloudlog"
 	"github.com/imarsman/unikerneltests/cmd/nats/config"
 	"github.com/imarsman/unikerneltests/pkg/instance"
@@ -28,25 +30,32 @@ func main() {
 	// snopts.HTTPPort = 8222
 
 	// Now run the server with the streaming and streaming/nats options.
-	ns, err := server.NewServer(natsOpts)
+	natsServer, err := server.NewServer(natsOpts)
 	if err != nil {
 		panic(err)
 	}
 
-	cloudlog.Info("Starting NAT server on", nats.DefaultPort)
-
 	// Start things up. Block here until done.
-	if err := server.Run(ns); err != nil {
+	if err := server.Run(natsServer); err != nil {
 		server.PrintAndDie(err.Error())
 	}
 
 	if config.Config().Cloud.Type == config.CloudGCE {
 		client := instance.NewGCEClient()
+
+		if client.InCloud() {
+			cloudlog.Info("Starting NAT server on", nats.DefaultPort)
+		} else {
+			fmt.Println("Starting NAT server on", nats.DefaultPort)
+		}
+
 		externalIP, err := client.ExternalIP()
-		if err != nil {
+		if err == nil {
 			cloudlog.Info("Instance IP", externalIP.String(), "error", err.Error())
+		} else {
+			fmt.Println("No IP found", err.Error())
 		}
 	}
 
-	ns.WaitForShutdown()
+	natsServer.WaitForShutdown()
 }

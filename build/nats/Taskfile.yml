@@ -36,6 +36,8 @@ dotenv: ['./config/env/.ENV']
 tasks:
   default:
     desc: To show tasks use task -l
+    cmds:
+      - task -l
   build:
     desc: build native and linux apps for running in novavms
     dir: '{{.apppath}}'
@@ -46,16 +48,16 @@ tasks:
       # See https://github.com/FiloSottile/mkcert
       # Make certificate for grpc tls
       # - mkcert -key-file {{.secretspath}}/serverkey.pem -cert-file {{.secretspath}}/servercert.pem grpc.com
-      - nk -gen user > {{.nksecretspath}}/nkuser.seed
-      - nk -inkey {{.nksecretspath}}/nkeyuser.seed -pubout > {{.nksecretspath}}/nkeyuser.pub
+      # - nk -gen user > {{.nksecretspath}}/nkuser.seed
+      # - nk -inkey {{.nksecretspath}}/nkeyuser.seed -pubout > {{.nksecretspath}}/nkeyuser.pub
       # Use of embed to flag context - used for port use
       - echo "cloud" > .context
-      - GOOS=linux go build .
-      - mv app {{.basepath}}/build/{{.applinux}}
+      - GOOS=linux go build -o app .
+      - mv app {{.basepath}}/{{.applinux}}
       # Use of embed to flag context - used for port use
       - echo "local" > .context
-      - go build .
-      - mv app {{.basepath}}/build/{{.nativeapp}}
+      - go build -o app .
+      - mv app {{.basepath}}/{{.nativeapp}}
   run:native:
     desc: run locally using native biuld
     dir: ./
