@@ -96,24 +96,30 @@ tasks:
         ignore_error: true
       - cmd: ops image delete "{{.imagename}}.img"
         ignore_error: true
+  instances:list:
+    desc: list instances in cloud
+    cmds:
+      - ops instance list -t {{.cloud}} -c {{.configpath}}
   instance:create:
     # Does not check to see if the cloud image is there and will fail if not
     # There are problems here with Google complaining of a pre-existing image
     desc: create an instance in cloud
     cmds:
-      # - task: image:create
       - ops instance create {{.imagename}} -t {{.cloud}} -c {{.configpath}}
       - echo "You can access the instance at the IP listed on port {{.cloudport}}"
   instance:delete:
     desc: delete a remote instance {{.imagename}}. Run as NAME=[name] task instance:delete
-    preconditions:
-      - test "{{.NAME}}" != ""
+    vars:
+      # Get instance name with its random number postfix
+      instancename:
+        sh: >
+          gcloud compute instances list --filter="name~{{.imagename}}" 
+          --format="value(selfLink.basename())" --limit=1
     cmds:
-      - ops instance delete {{.NAME}}
-  instance:list:
-    desc: list instances in cloud
-    cmds:
-      - ops instance list -t {{.cloud}} -c {{.configpath}}
+      - cmd: ops instance delete {{.instancename}}
+        ignore_error: true
+      - cmd: gcloud compute instances delete "{{.instancename}}"
+        ignore_error: true
   fireeall:allow:
     desc: allow http port access
     cmds:
