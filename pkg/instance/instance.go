@@ -27,8 +27,8 @@ type IFInstance interface {
 
 // Instance useful information about an instance across platform
 type Instance struct {
-	PublicIPs    []netaddr.IP
-	PrivateIPs   []netaddr.IP
+	PublicIP     netaddr.IP
+	PrivateIP    netaddr.IP
 	Zone         string
 	ProjectID    string
 	CreationDate string
