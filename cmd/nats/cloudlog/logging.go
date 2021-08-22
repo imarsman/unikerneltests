@@ -1,4 +1,4 @@
-package logging
+package cloudlog
 
 import (
 	"context"
@@ -54,7 +54,7 @@ func init() {
 	ctx := context.Background()
 
 	// Use configured project ID for logs
-	projectID := config.Config().ProjectID
+	projectID := config.Config().Cloud.ProjectID
 
 	var err error
 	// Creates a client.

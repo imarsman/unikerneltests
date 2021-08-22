@@ -21,6 +21,7 @@ vars:
   basepath:
     sh: pwd
   apppath: '{{.basepath}}/../../cmd/{{.appname}}'
+  pkgpath: '{{.basepath}}/../../pkg'
   configpath: '{{.basepath}}/config/config.json'
   applinux: '{{.appname}}linux'
   nativeapp: '{{.appname}}native'
@@ -120,6 +121,11 @@ tasks:
   test:logging:
     desc: Test logging module
     dir: '{{.apppath}}/logging'
+    cmds:
+      - go test -v .
+  test:instance:gce:
+    desc: Test instance module
+    dir: '{{.pkgpath}}/instance/gce'
     cmds:
       - go test -v .
   # Things to do

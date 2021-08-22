@@ -15,15 +15,27 @@ var config *Container
 
 // Container config for app
 type Container struct {
-	Cloud     string   `yaml:"cloud" validate:"required,oneof=gcp"`
-	ProjectID string   `yaml:"projectid" validate:"required"`
-	Loging    *Logging `yaml:"logging" validate:"required,dive,required"`
+	Cloud   *Cloud   `yaml:"cloud" validate:"required"`
+	Loging  *Logging `yaml:"logging" validate:"required,dive,required"`
+	Context *Context `yaml:"context" validate:"required"`
+}
+
+// Cloud configuration for cloud used
+type Cloud struct {
+	Type      string `yaml:"type" validate:"required,oneof=gce"`
+	ProjectID string `yaml:"projectid" validate:"required"`
 }
 
 // Logging settings tied to logging
 type Logging struct {
 	Name  string `yaml:"name" validate:"required"`
 	Level string `yaml:"level" validate:"required,oneof=debug info alert warn error"`
+}
+
+// Context the context an instance is running in
+type Context struct {
+	Instance  string `yaml:"instance" validate:"required,oneof=standalone group"`
+	GroupName string `yaml:"groupname"`
 }
 
 // Config get loaded config
