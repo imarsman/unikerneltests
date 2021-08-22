@@ -11,8 +11,23 @@ of a clustered NATS messaging service was running, each instance hopefully would
 be able to ascertain the IPs of the other instances in the group, thus forming
 an ad-hoc cluster. A client could use the same technique with sufficient
 privileges, to obtain the IPs of the group's instances and thus join a NATS
-cluster.
+cluster. I have not finished testing out setting up a cluster based on finding
+IPs for an instance group at startup. We'll see.
 
 I expect that much of what I am exploring here is already known. The goal is for
 me to get to know it. I would like to find ways to avoid things like building a
 Kubernetes cluster when Google already offers managed clusters.
+
+## What works
+
+- straightforward logging to GCP logs
+
+## What is in progress
+
+- core instance attributes like public/private IPs for GCE
+  - use of interfaces works as does quickly testing if code running in cloud
+
+## What does not work
+
+- AWS support for instance information
+- Any other cloud provider for instance information

@@ -8,6 +8,8 @@ import (
 	"inet.af/netaddr"
 )
 
+// GCE specific function implementation
+
 // GCEClient represents a GCEClient instance
 type GCEClient struct {
 	Client *metadata.Client

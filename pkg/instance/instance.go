@@ -8,6 +8,12 @@ import (
 	"inet.af/netaddr"
 )
 
+// A basic set of functions that can be implemented for various cloud platforms
+// Each cloud provider makes available many pieces of information about
+// instances and their contexts. This is not the goal here. We mostly need to
+// know things like internal and external IP, and instance summary information
+// for instance groups.
+
 // IFInstance a cross-cloud instance interface
 type IFInstance interface {
 	ExternalIP() (netaddr.IP, error)

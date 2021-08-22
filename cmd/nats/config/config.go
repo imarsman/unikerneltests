@@ -8,6 +8,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Configuration for the app. It is useful to embed this at build time.
+
 const (
 	// CloudGCE GCE cloud
 	CloudGCE = "gce"

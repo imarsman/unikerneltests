@@ -11,10 +11,13 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
+// Basic NATS server setup. Plans are to allow for standalone and clustered NATS
+// server setups.
+
 func main() {
 	snopts := stand.NewNATSOptions()
 	snopts.Port = nats.DefaultPort
-	// snopts.HTTPPort = 8223
+	snopts.HTTPPort = 8223
 
 	// Now run the server with the streaming and streaming/nats options.
 	ns, err := server.NewServer(snopts)
