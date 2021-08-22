@@ -16,12 +16,19 @@ import (
 
 // IFInstance a cross-cloud instance interface
 type IFInstance interface {
+	// External IP for an instance, if running in cloud
 	ExternalIP() (netaddr.IP, error)
+	// Internal IP for an instance, if running in cloud
 	InternalIP() (netaddr.IP, error)
-	InGroup() (bool, error)
-	GroupInstances() ([]*Instance, error)
+	// Is container running in a group
+	InGroup(string) (bool, error)
+	// Instances in group, if any
+	GroupInstances(string) ([]*Instance, error)
+	// Id of running instance
 	InstanceID() (string, error)
+	// Name of running instance
 	InstanceName() (string, error)
+	// Is code running in a cloud
 	InCloud() bool
 }
 
@@ -32,6 +39,15 @@ type Instance struct {
 	Zone         string
 	ProjectID    string
 	CreationDate string
+}
+
+// NewGroupInstances get empty list of group instances
+func NewGroupInstances() []*Instance {
+	group := []*Instance{}
+	i := new(Instance)
+	group = append(group, i)
+
+	return group
 }
 
 func init() {

@@ -88,7 +88,7 @@ func (c *GCEClient) InstanceName() (string, error) {
 }
 
 // InGroup is instance in a managed instance group
-func (c *GCEClient) InGroup() (bool, error) {
+func (c *GCEClient) InGroup(name string) (bool, error) {
 	if !c.OnGCE {
 		return false, errors.New("Not running on GCE")
 	}
@@ -97,10 +97,12 @@ func (c *GCEClient) InGroup() (bool, error) {
 }
 
 // GroupInstances get list of instances in MIG
-func (c *GCEClient) GroupInstances() ([]*Instance, error) {
+func (c *GCEClient) GroupInstances(name string) ([]*Instance, error) {
+	group := NewGroupInstances()
+
 	if !c.OnGCE {
-		return nil, errors.New("Not running on GCE")
+		return group, errors.New("Not running on GCE")
 	}
 
-	return []*Instance{}, nil
+	return group, nil
 }
