@@ -8,6 +8,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+const (
+	// CloudGCE GCE cloud
+	CloudGCE = "gce"
+	// CloudAWS AWS cloud
+	CloudAWS = "aws"
+)
+
 //go:embed config.yaml
 var configBytes []byte
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/imarsman/unikerneltests/cmd/nats/cloudlog"
+	"github.com/imarsman/unikerneltests/cmd/nats/config"
 	"github.com/imarsman/unikerneltests/pkg/instance"
 	"github.com/nats-io/nats-server/v2/server"
 	stand "github.com/nats-io/nats-streaming-server/server"
@@ -27,10 +28,12 @@ func main() {
 		server.PrintAndDie(err.Error())
 	}
 
-	client := instance.NewForGCE()
-	ip, err := client.ExternalIP()
-	if err != nil {
-		cloudlog.Info("Instance IP", ip, "error", err.Error())
+	if config.Config().Cloud.Type == config.CloudGCE {
+		client := instance.NewGCEClient()
+		externalIP, err := client.ExternalIP()
+		if err != nil {
+			cloudlog.Info("Instance IP", externalIP.String(), "error", err.Error())
+		}
 	}
 
 	ns.WaitForShutdown()

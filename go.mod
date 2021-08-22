@@ -20,4 +20,5 @@ require (
 	google.golang.org/genproto v0.0.0-20210820002220-43fce44e7af1 // indirect
 	google.golang.org/grpc v1.40.0
 	gopkg.in/yaml.v2 v2.2.3
+	inet.af/netaddr v0.0.0-20210729200904-31d5ee66059c
 )
