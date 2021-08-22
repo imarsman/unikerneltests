@@ -19,6 +19,7 @@ type GCEClient struct {
 // NewGCEClient get a new GCE instance as an IFInstance
 func NewGCEClient() IFInstance {
 	gce := GCEClient{}
+
 	gce.Client = metadata.NewClient(http.DefaultClient)
 	gce.OnGCE = metadata.OnGCE()
 
@@ -35,10 +36,12 @@ func (c *GCEClient) ExternalIP() (netaddr.IP, error) {
 	if !c.OnGCE {
 		return netaddr.IP{}, errors.New("Not running on GCE")
 	}
+
 	ipStr, err := c.Client.ExternalIP()
 	if err != nil {
 		return netaddr.IP{}, err
 	}
+
 	ip, err := netaddr.ParseIP(ipStr)
 	if err != nil {
 		return netaddr.IP{}, err
@@ -52,10 +55,12 @@ func (c *GCEClient) InternalIP() (netaddr.IP, error) {
 	if !c.OnGCE {
 		return netaddr.IP{}, errors.New("Not running on GCE")
 	}
+
 	ipStr, err := c.Client.InternalIP()
 	if err != nil {
 		return netaddr.IP{}, err
 	}
+
 	ip, err := netaddr.ParseIP(ipStr)
 	if err != nil {
 		return netaddr.IP{}, err
