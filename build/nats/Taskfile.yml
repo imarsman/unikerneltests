@@ -120,7 +120,7 @@ tasks:
       - go test -v .
   test:logging:
     desc: Test logging module
-    dir: '{{.apppath}}/logging'
+    dir: '{{.apppath}}/cloudlog'
     cmds:
       - go test -v .
   test:instance:

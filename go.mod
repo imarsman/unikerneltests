@@ -9,6 +9,7 @@ require (
 	github.com/go-playground/validator/v10 v10.9.0
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/matryer/is v1.4.0
+	github.com/nats-io/graft v0.0.0-20200605173148-348798afea05 // indirect
 	github.com/nats-io/nats-server/v2 v2.3.3
 	github.com/nats-io/nats-streaming-server v0.22.1
 	github.com/nats-io/nats.go v1.11.1-0.20210623165838-4b75fc59ae30

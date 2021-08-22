@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/imarsman/unikerneltests/cmd/nats/cloudlog"
 	"github.com/imarsman/unikerneltests/cmd/nats/config"
 	"github.com/imarsman/unikerneltests/pkg/instance"
@@ -14,18 +12,29 @@ import (
 // Basic NATS server setup. Plans are to allow for standalone and clustered NATS
 // server setups.
 
+// Leader choosing library
+// https://github.com/nats-io/graft
+
 func main() {
-	snopts := stand.NewNATSOptions()
-	snopts.Port = nats.DefaultPort
-	snopts.HTTPPort = 8223
+	// Need to
+	// - check to see if running in group
+	// - if running in group, get IP
+	// - Choose leader from among servers
+	// - Use leader IP to set up NATS in cluster mode
+	// - Run NATS
+
+	natsOpts := stand.NewNATSOptions()
+	natsOpts.Port = nats.DefaultPort
+	// snopts.HTTPPort = 8222
 
 	// Now run the server with the streaming and streaming/nats options.
-	ns, err := server.NewServer(snopts)
+	ns, err := server.NewServer(natsOpts)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("Starting NAT server on %v\n", nats.DefaultPort)
+	cloudlog.Info("Starting NAT server on", nats.DefaultPort)
+
 	// Start things up. Block here until done.
 	if err := server.Run(ns); err != nil {
 		server.PrintAndDie(err.Error())

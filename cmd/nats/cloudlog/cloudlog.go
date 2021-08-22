@@ -31,11 +31,11 @@ const (
 	errorLevelName = "error"
 )
 
-var cloudLogger *logging.Logger
-var logger *log.Logger
-var client *logging.Client
-var logName string
-var logLevel int
+var client *logging.Client      // GCP logging client
+var cloudLogger *logging.Logger // Actual logger to use for logging
+var logger *log.Logger          // Go log to use with GCP logging
+var logName string              // For display in cloud logging
+var logLevel int                // Used to restrict logging
 
 var debugLogger *log.Logger
 var infoLogger *log.Logger
@@ -68,6 +68,7 @@ func init() {
 	level := config.Config().Loging.Level
 	logLevel = 0
 
+	// Set log level as int
 	switch strings.ToLower(level) {
 	case debugLevelName:
 		logLevel = levelDebug
@@ -102,36 +103,36 @@ func init() {
 }
 
 // Debug make a debug log entry
-func Debug(msg ...string) {
+func Debug(msg ...interface{}) {
 	if logLevel >= levelDebug { // Check log level otherwise do nothing
-		debugLogger.Println(msg)
+		debugLogger.Println(msg...)
 	}
 }
 
 // Info make an info log entry
-func Info(msg ...string) {
+func Info(msg ...interface{}) {
 	if logLevel >= levelInfo { // Check log level otherwise do nothing
-		infoLogger.Println(msg)
+		debugLogger.Println(msg...)
 	}
 }
 
 // Alert make an alert log entry
-func Alert(msg ...string) {
+func Alert(msg ...interface{}) {
 	if logLevel >= levelAlert { // Check log level otherwise do nothing
-		alertLogger.Println(msg)
+		debugLogger.Println(msg...)
 	}
 }
 
 // Warn log a warning entry
-func Warn(msg ...string) {
+func Warn(msg ...interface{}) {
 	if logLevel >= levelWarn { // Check log level otherwise do nothing
-		warnLogger.Println(msg)
+		debugLogger.Println(msg...)
 	}
 }
 
 // Error log an error entry
-func Error(msg ...string) {
+func Error(msg ...interface{}) {
 	if logLevel >= levelError { // Check log level otherwise do nothing
-		errorLogger.Println(msg)
+		debugLogger.Println(msg...)
 	}
 }
