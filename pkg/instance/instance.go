@@ -1,11 +1,28 @@
-package gce
+package instance
 
 import (
 	"errors"
 	"net/http"
 
 	"cloud.google.com/go/compute/metadata"
+	"github.com/imarsman/unikerneltests/pkg/instance/gce"
 )
+
+// Instance a cross-cloud instance interface
+type Instance interface {
+	ExternalIP() (string, error)
+	InternalIP() (string, error)
+	InGroup() (bool, error)
+	GroupInstances() ([]string, error)
+	InCloud() bool
+}
+
+// NewForGCE get new instance for GCE environment
+func NewForGCE() Instance {
+	client := gce.NewGCEClient()
+
+	return client
+}
 
 // GCEClient represents a GCEClient instance
 type GCEClient struct {

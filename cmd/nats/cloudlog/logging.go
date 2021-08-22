@@ -103,35 +103,35 @@ func init() {
 
 // Debug make a debug log entry
 func Debug(msg ...string) {
-	if logLevel >= levelDebug { // Check log level
+	if logLevel >= levelDebug { // Check log level otherwise do nothing
 		debugLogger.Println(msg)
 	}
 }
 
 // Info make an info log entry
 func Info(msg ...string) {
-	if logLevel >= levelInfo { // Check log level
+	if logLevel >= levelInfo { // Check log level otherwise do nothing
 		infoLogger.Println(msg)
 	}
 }
 
 // Alert make an alert log entry
 func Alert(msg ...string) {
-	if logLevel >= levelAlert { // Check log level
+	if logLevel >= levelAlert { // Check log level otherwise do nothing
 		alertLogger.Println(msg)
 	}
 }
 
 // Warn log a warning entry
 func Warn(msg ...string) {
-	if logLevel >= levelWarn { // Check log level
+	if logLevel >= levelWarn { // Check log level otherwise do nothing
 		warnLogger.Println(msg)
 	}
 }
 
 // Error log an error entry
 func Error(msg ...string) {
-	if logLevel >= levelError { // Check log level
+	if logLevel >= levelError { // Check log level otherwise do nothing
 		errorLogger.Println(msg)
 	}
 }

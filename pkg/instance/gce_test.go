@@ -1,4 +1,4 @@
-package gce
+package instance
 
 import (
 	"testing"
@@ -10,11 +10,11 @@ import (
 // TestGCP test Google Cloud Platform instance
 func TestGCP(t *testing.T) {
 	is := is.New(t)
-	client := NewClient()
-	is.True(client.Client != nil)
+	client := NewForGCE()
+	// is.True(client.Client != nil)
 	t.Log("client", spew.Sprintf("%+v", client))
 	ip, err := client.ExternalIP()
-	t.Log("running in GCE", client.OnGCE)
+	t.Log("running in GCE", client.InCloud())
 	is.True(err != nil)
 	is.Equal(ip, "")
 }

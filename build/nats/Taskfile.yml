@@ -123,9 +123,9 @@ tasks:
     dir: '{{.apppath}}/logging'
     cmds:
       - go test -v .
-  test:instance:gce:
+  test:instance:
     desc: Test instance module
-    dir: '{{.pkgpath}}/instance/gce'
+    dir: '{{.pkgpath}}/instance'
     cmds:
       - go test -v .
   # Things to do
