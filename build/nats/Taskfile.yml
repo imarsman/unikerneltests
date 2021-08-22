@@ -77,18 +77,25 @@ tasks:
       # - ops image list -t {{.cloud}} -c {{.configpath}}
   image:create:
     # This fails to delete the source image
-    desc: create image locally
+    desc: create image locally.
     dir: ./
     cmds:
+      - task: image:delete
       - task: build
+      # - gcloud compute images delete "{{.applinux}}"
       - ops image create {{.applinux}} -c {{.configpath}} -i {{.imagename}} -t {{.cloud}}
-  delete-image:
-    desc: delete the image
+  image:delete:
+    desc: delete the image. Run as NAME=[name] task image:delete
+    # preconditions:
+    #   - test "{{.NAME}}" != ""
     cmds:
       # Note: requires GOOGLE_APPLICATION_CREDENTIALS, GOOGLE_CLOUD_PROJECT, and
       # GOOGLE_CLOUD_ZONE environment variables
-      - ops image delete {{.imagename}}.img
-      - ops image delete {{.imagename}}
+      # If image is already deleted in GCP or locally ignore error
+      - cmd: gcloud compute images delete "{{.imagename}}"
+        ignore_error: true
+      - cmd: ops image delete "{{.imagename}}.img"
+        ignore_error: true
   instance:create:
     # Does not check to see if the cloud image is there and will fail if not
     # There are problems here with Google complaining of a pre-existing image
@@ -98,9 +105,11 @@ tasks:
       - ops instance create {{.imagename}} -t {{.cloud}} -c {{.configpath}}
       - echo "You can access the instance at the IP listed on port {{.cloudport}}"
   instance:delete:
-    desc: delete a remote instance {{.imagename}}
+    desc: delete a remote instance {{.imagename}}. Run as NAME=[name] task instance:delete
+    preconditions:
+      - test "{{.NAME}}" != ""
     cmds:
-      - ops instance delete {{.imagename}}
+      - ops instance delete {{.NAME}}
   instance:list:
     desc: list instances in cloud
     cmds:
