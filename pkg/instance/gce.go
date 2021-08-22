@@ -16,16 +16,13 @@ type GCEClient struct {
 	OnGCE  bool
 }
 
-// NewGCEClient get a new GPC instance
+// NewGCEClient get a new GCE instance as an IFInstance
 func NewGCEClient() IFInstance {
 	gce := GCEClient{}
 	gce.Client = metadata.NewClient(http.DefaultClient)
 	gce.OnGCE = metadata.OnGCE()
 
 	return &gce
-}
-
-func init() {
 }
 
 // InCloud is code running in cloud
