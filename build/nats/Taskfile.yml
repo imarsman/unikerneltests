@@ -29,6 +29,7 @@ vars:
   cloud: gcp
   localport: 4222
   cloudport: 4222
+  zone: us-east1-b
 
 # If running with pre-set environment variables do not run the dotenv
 dotenv: ['./config/env/.ENV']
@@ -115,10 +116,15 @@ tasks:
         sh: >
           gcloud compute instances list --filter="name~{{.imagename}}" 
           --format="value(selfLink.basename())" --limit=1
+    # Require instance to be found
+    preconditions:
+      - test "{{.instancename}}" != ""
     cmds:
-      - cmd: ops instance delete {{.instancename}}
+      # Delete in GCP
+      - cmd: gcloud compute instances delete --quiet "{{.instancename}}" --zone={{.zone}}
         ignore_error: true
-      - cmd: gcloud compute instances delete "{{.instancename}}"
+      # Delete in OPS repo
+      - cmd: ops instance delete {{.instancename}}
         ignore_error: true
   fireeall:allow:
     desc: allow http port access
