@@ -18,3 +18,4 @@ build/nats/config/env/nanovms-321303-d3583d1954b4.json
 build/nats/config/config.json
 **/*.pem
 cmd/nats/config/config.yaml
+build/nats/nats*
