@@ -31,6 +31,8 @@ vars:
   cloudport: 4222
   zone: us-east1-b
 
+# Service account: 436683508172-compute@developer.gserviceaccount.com
+
 # If running with pre-set environment variables do not run the dotenv
 dotenv: ['./config/env/.ENV']
 
@@ -39,6 +41,7 @@ tasks:
     desc: To show tasks use task -l
     cmds:
       - task -l
+      - echo $GOOGLE_APPLICATION_CREDENTIALS
   build:
     desc: build native and linux apps for running in novavms
     dir: '{{.apppath}}'
@@ -63,6 +66,8 @@ tasks:
     desc: run locally using native biuld
     dir: ./
     cmds:
+      - echo $ENV
+      - echo "env $GOOGLE_CLOUD_PROJECT"
       - task: build
       - ./{{.nativeapp}}
   run:locally:
@@ -70,8 +75,8 @@ tasks:
     dir: ./
     cmds:
       - task: build
-      - ops run -p "{{.localport}},4222" ./{{.applinux}}
-  images:list:
+      - ops run -p "{{.localport}}" ./{{.applinux}}
+  image:list:
     desc: list images
     cmds:
       - ops image list
@@ -81,7 +86,7 @@ tasks:
     desc: create image locally.
     dir: ./
     cmds:
-      - task: image:delete
+      # - task: image:delete
       - task: build
       # - gcloud compute images delete "{{.applinux}}"
       - ops image create {{.applinux}} -c {{.configpath}} -i {{.imagename}} -t {{.cloud}}
@@ -97,7 +102,7 @@ tasks:
         ignore_error: true
       - cmd: ops image delete "{{.imagename}}.img"
         ignore_error: true
-  instances:list:
+  instance:list:
     desc: list instances in cloud
     cmds:
       - ops instance list -t {{.cloud}} -c {{.configpath}}
@@ -124,8 +129,8 @@ tasks:
       - cmd: gcloud compute instances delete --quiet "{{.instancename}}" --zone={{.zone}}
         ignore_error: true
       # Delete in OPS repo
-      - cmd: ops instance delete {{.instancename}}
-        ignore_error: true
+      # - cmd: ops instance delete {{.instancename}}
+      #   ignore_error: true
   fireeall:allow:
     desc: allow http port access
     cmds:
