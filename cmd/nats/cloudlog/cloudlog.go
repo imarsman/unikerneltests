@@ -50,6 +50,8 @@ func flush() {
 	}
 }
 
+var logActive = false
+
 func init() {
 	ctx := context.Background()
 
@@ -60,7 +62,8 @@ func init() {
 	// Creates a client.
 	client, err = logging.NewClient(ctx, projectID)
 	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
+		fmt.Printf("Failed to create cloud log client: %v\n", err)
+		return
 	}
 
 	logName = config.Config().Loging.Name
@@ -89,6 +92,7 @@ func init() {
 	warnLogger = cloudLogger.StandardLogger(logging.Warning)
 	errorLogger = cloudLogger.StandardLogger(logging.Error)
 
+	logActive = true
 	// Wait for signal and exit cleanly
 	go func() {
 		stop := make(chan os.Signal, 1)
@@ -104,35 +108,35 @@ func init() {
 
 // Debug make a debug log entry
 func Debug(msg ...interface{}) {
-	if logLevel >= levelDebug { // Check log level otherwise do nothing
+	if logLevel >= levelDebug && logActive { // Check log level otherwise do nothing
 		debugLogger.Println(msg...)
 	}
 }
 
 // Info make an info log entry
 func Info(msg ...interface{}) {
-	if logLevel >= levelInfo { // Check log level otherwise do nothing
+	if logLevel >= levelInfo && logActive { // Check log level otherwise do nothing
 		debugLogger.Println(msg...)
 	}
 }
 
 // Alert make an alert log entry
 func Alert(msg ...interface{}) {
-	if logLevel >= levelAlert { // Check log level otherwise do nothing
+	if logLevel >= levelAlert && logActive { // Check log level otherwise do nothing
 		debugLogger.Println(msg...)
 	}
 }
 
 // Warn log a warning entry
 func Warn(msg ...interface{}) {
-	if logLevel >= levelWarn { // Check log level otherwise do nothing
+	if logLevel >= levelWarn && logActive { // Check log level otherwise do nothing
 		debugLogger.Println(msg...)
 	}
 }
 
 // Error log an error entry
 func Error(msg ...interface{}) {
-	if logLevel >= levelError { // Check log level otherwise do nothing
+	if logLevel >= levelError && logActive { // Check log level otherwise do nothing
 		debugLogger.Println(msg...)
 	}
 }
