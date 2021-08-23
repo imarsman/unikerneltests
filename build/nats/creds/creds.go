@@ -34,7 +34,7 @@ func init() {
 	// Set up certificate that client and server can use
 	cert, err := tls.X509KeyPair(servercert, serverkey)
 	if err != nil {
-		log.Fatal(err)
+		log.Default().Println(err)
 	}
 
 	// Make the CertPool.
