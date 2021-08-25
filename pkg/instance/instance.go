@@ -3,6 +3,11 @@ package instance
 import (
 	// Lilely to be added to Go
 	// https://github.com/golang/go/issues/46518
+	"fmt"
+	"net/http"
+	"time"
+
+	"cloud.google.com/go/compute/metadata"
 	"inet.af/netaddr"
 )
 
@@ -11,6 +16,33 @@ import (
 // instances and their contexts. This is not the goal here. We mostly need to
 // know things like internal and external IP, and instance summary information
 // for instance groups.
+
+// WaitForMetadataService test to see if API can be used
+func WaitForMetadataService() error {
+	c := make(chan int)
+
+	var err error
+	go func() {
+		for i := 0; i < 10; i++ {
+			t := time.Now()
+			client := metadata.NewClient(http.DefaultClient)
+			d := time.Since(t)
+			_, err := client.ProjectID()
+			if err != nil {
+				fmt.Println("Waiting")
+				time.Sleep(2 * time.Second)
+			} else {
+				fmt.Println("Finished wait. Took", d.Round(time.Nanosecond), "to get metadata client")
+				c <- 1
+				return
+			}
+		}
+		c <- 1
+	}()
+
+	<-c
+	return err
+}
 
 // IFInstance a cross-cloud instance interface
 type IFInstance interface {

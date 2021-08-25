@@ -100,10 +100,10 @@ tasks:
       # Note: requires GOOGLE_APPLICATION_CREDENTIALS, GOOGLE_CLOUD_PROJECT, and
       # GOOGLE_CLOUD_ZONE environment variables
       # If image is already deleted in GCP or locally ignore error
-      - cmd: gcloud compute images delete "{{.imagename}}"
+      - cmd: gcloud compute images delete "{{.imagename}}" --quiet
         ignore_error: true
-      - cmd: ops image delete "{{.imagename}}.img"
-        ignore_error: true
+      # - cmd: ops image delete "{{.imagename}}.img"
+      #   ignore_error: true
   instance:list:
     desc: list instances in cloud
     cmds:
@@ -121,7 +121,9 @@ tasks:
       #   --source-machine-image "{{.imagename}}" --service-account {{.serviceaccount}}
       - ops instance create {{.imagename}} -t {{.cloud}} -c {{.configpath}}
       - task: instance:stop
+      - cmd: sleep 20
       - task: instance:acctattach
+      - cmd: sleep 20
       - task: instance:start
       # - echo "You can access the instance at the IP listed on port {{.cloudport}}"
   instance:delete:

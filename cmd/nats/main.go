@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/imarsman/unikerneltests/cmd/nats/cloudlog"
+	"github.com/imarsman/unikerneltests/pkg/instance"
 	"github.com/nats-io/nats-server/v2/server"
 	stand "github.com/nats-io/nats-streaming-server/server"
 	"github.com/nats-io/nats.go"
@@ -20,6 +21,13 @@ func main() {
 	// - Choose leader from among servers
 	// - Use leader IP to set up NATS in cluster mode
 	// - Run NATS
+
+	// Wait for metadata service to be available and hopefully thus also the
+	// overall API.
+	instance.WaitForMetadataService()
+
+	// time.Sleep(30 * time.Second)
+	// cloudlog.Startup()
 
 	natsOpts := stand.NewNATSOptions()
 	natsOpts.Port = nats.DefaultPort

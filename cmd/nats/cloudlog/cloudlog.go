@@ -11,6 +11,7 @@ import (
 
 	"cloud.google.com/go/logging"
 	"github.com/imarsman/unikerneltests/cmd/nats/config"
+	"github.com/imarsman/unikerneltests/pkg/instance"
 )
 
 // https://cloud.google.com/logging/docs/reference/libraries#linux-or-macos
@@ -53,6 +54,7 @@ func flush() {
 var logActive = false
 
 func init() {
+	instance.WaitForMetadataService()
 	ctx := context.Background()
 
 	// Use configured project ID for logs
@@ -109,7 +111,7 @@ func init() {
 // Debug make a debug log entry
 func Debug(msg ...interface{}) {
 	if logLevel <= levelDebug && logActive { // Check log level otherwise do nothing
-		debugLogger.Print(msg...)
+		debugLogger.Println(msg...)
 	}
 }
 
@@ -117,27 +119,27 @@ func Debug(msg ...interface{}) {
 func Info(msg ...interface{}) {
 	// fmt.Println("log level", logLevel, "levelInfo", levelInfo, "log active", logActive, "msg", msg)
 	if (logLevel <= levelInfo) && logActive { // Check log level otherwise do nothing
-		infoLogger.Print(msg...)
+		infoLogger.Println(msg...)
 	}
 }
 
 // Alert make an alert log entry
 func Alert(msg ...interface{}) {
 	if logLevel <= levelAlert && logActive { // Check log level otherwise do nothing
-		alertLogger.Print(msg...)
+		alertLogger.Println(msg...)
 	}
 }
 
 // Warn log a warning entry
 func Warn(msg ...interface{}) {
 	if logLevel <= levelWarn && logActive { // Check log level otherwise do nothing
-		warnLogger.Print(msg...)
+		warnLogger.Println(msg...)
 	}
 }
 
 // Error log an error entry
 func Error(msg ...interface{}) {
 	if logLevel <= levelError && logActive { // Check log level otherwise do nothing
-		errorLogger.Print(msg...)
+		errorLogger.Println(msg...)
 	}
 }
