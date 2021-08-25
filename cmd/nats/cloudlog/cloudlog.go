@@ -108,35 +108,36 @@ func init() {
 
 // Debug make a debug log entry
 func Debug(msg ...interface{}) {
-	if logLevel >= levelDebug && logActive { // Check log level otherwise do nothing
-		debugLogger.Println(msg...)
+	if logLevel <= levelDebug && logActive { // Check log level otherwise do nothing
+		debugLogger.Print(msg...)
 	}
 }
 
 // Info make an info log entry
 func Info(msg ...interface{}) {
-	if logLevel >= levelInfo && logActive { // Check log level otherwise do nothing
-		debugLogger.Println(msg...)
+	// fmt.Println("log level", logLevel, "levelInfo", levelInfo, "log active", logActive, "msg", msg)
+	if (logLevel <= levelInfo) && logActive { // Check log level otherwise do nothing
+		infoLogger.Print(msg...)
 	}
 }
 
 // Alert make an alert log entry
 func Alert(msg ...interface{}) {
-	if logLevel >= levelAlert && logActive { // Check log level otherwise do nothing
-		debugLogger.Println(msg...)
+	if logLevel <= levelAlert && logActive { // Check log level otherwise do nothing
+		alertLogger.Print(msg...)
 	}
 }
 
 // Warn log a warning entry
 func Warn(msg ...interface{}) {
-	if logLevel >= levelWarn && logActive { // Check log level otherwise do nothing
-		debugLogger.Println(msg...)
+	if logLevel <= levelWarn && logActive { // Check log level otherwise do nothing
+		warnLogger.Print(msg...)
 	}
 }
 
 // Error log an error entry
 func Error(msg ...interface{}) {
-	if logLevel >= levelError && logActive { // Check log level otherwise do nothing
-		debugLogger.Println(msg...)
+	if logLevel <= levelError && logActive { // Check log level otherwise do nothing
+		errorLogger.Print(msg...)
 	}
 }
