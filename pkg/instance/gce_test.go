@@ -5,6 +5,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/matryer/is"
+	"inet.af/netaddr"
 )
 
 // TestGCP test Google Cloud Platform instance
@@ -22,4 +23,15 @@ func TestGCP(t *testing.T) {
 	is.True(err != nil)
 
 	is.True(externalIP.IsValid() == false)
+}
+
+func TestIP(t *testing.T) {
+	is := is.New(t)
+
+	ip, err := netaddr.ParseIP("35.196.70.51")
+	is.NoErr(err)
+	t.Log("ip", ip.String())
+	// if err != nil {
+	// 	return netaddr.IP{}, err
+	// }
 }

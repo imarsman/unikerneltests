@@ -142,8 +142,8 @@ tasks:
       - cmd: gcloud compute instances delete --quiet "{{.instancename}}" --zone={{.zone}}
         ignore_error: true
       # Delete in OPS repo
-      - cmd: ops instance delete {{.instancename}}
-        ignore_error: true
+      # - cmd: ops instance delete {{.instancename}}
+      #   ignore_error: true
   instance:acctattach:
     vars:
       # Get instance name with its random number postfix

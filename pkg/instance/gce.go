@@ -2,6 +2,7 @@ package instance
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"cloud.google.com/go/compute/metadata"
@@ -21,6 +22,9 @@ func NewGCEClient() IFInstance {
 	gce := GCEClient{}
 
 	gce.Client = metadata.NewClient(http.DefaultClient)
+	if gce.Client == nil {
+		fmt.Println("metadata client", gce.Client)
+	}
 	gce.OnGCE = metadata.OnGCE()
 
 	return &gce
@@ -39,13 +43,18 @@ func (c *GCEClient) ExternalIP() (netaddr.IP, error) {
 
 	ipStr, err := c.Client.ExternalIP()
 	if err != nil {
+		fmt.Println("Error getting external IP")
 		return netaddr.IP{}, err
 	}
+
+	fmt.Println("ip string", ipStr)
 
 	ip, err := netaddr.ParseIP(ipStr)
 	if err != nil {
 		return netaddr.IP{}, err
 	}
+
+	fmt.Println("ip", ip.String())
 
 	return ip, nil
 }
