@@ -33,9 +33,9 @@ const (
 
 var client *logging.Client      // GCP logging client
 var cloudLogger *logging.Logger // Actual logger to use for logging
-var logger *log.Logger          // Go log to use with GCP logging
-var logName string              // For display in cloud logging
-var logLevel int                // Used to restrict logging
+// var logger *log.Logger          // Go log to use with GCP logging
+var logName string // For display in cloud logging
+var logLevel int   // Used to restrict logging
 
 var debugLogger *log.Logger
 var infoLogger *log.Logger

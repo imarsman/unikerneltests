@@ -30,6 +30,8 @@ vars:
   localport: 4222
   cloudport: 4222
   zone: us-east1-b
+  serviceaccount: left out
+  project: left out
 
 # Service account: 436683508172-compute@developer.gserviceaccount.com
 
@@ -110,9 +112,27 @@ tasks:
     # Does not check to see if the cloud image is there and will fail if not
     # There are problems here with Google complaining of a pre-existing image
     desc: create an instance in cloud
-    cmds:
+    # vars:
+    #   # Get instance name with its random number postfix
+    #   instancename:
+    #     sh: >
+    #       gcloud compute instances list --filter="name~{{.imagename}}" 
+    #       --format="value(selfLink.basename())" --limit=1
+    # # Require instance to be found
+    # preconditions:
+    #   - test "{{.instancename}}" != ""
+    cmds: 
+      # - >
+      #   gcloud beta compute instances create {{.imagename}}
+      #   --project={{.project}}
+      #   --zone {{.zone}}
+      #   --machine-type e2-micro
+      #   --source-machine-image "{{.imagename}}" --service-account {{.serviceaccount}}
       - ops instance create {{.imagename}} -t {{.cloud}} -c {{.configpath}}
-      - echo "You can access the instance at the IP listed on port {{.cloudport}}"
+      - task: instance:stop
+      - task: instance:acctattach
+      - task: instance:start
+      # - echo "You can access the instance at the IP listed on port {{.cloudport}}"
   instance:delete:
     desc: delete a remote instance {{.imagename}}. Run as NAME=[name] task instance:delete
     vars:
@@ -131,7 +151,41 @@ tasks:
       # Delete in OPS repo
       # - cmd: ops instance delete {{.instancename}}
       #   ignore_error: true
-  fireeall:allow:
+  instance:acctattach:
+    vars:
+      # Get instance name with its random number postfix
+      instancename:
+        sh: >
+          gcloud compute instances list --filter="name~{{.imagename}}" 
+          --format="value(selfLink.basename())" --limit=1
+    # Require instance to be found
+    preconditions:
+      - test "{{.instancename}}" != ""
+    cmds:
+      - >
+        gcloud compute instances set-service-account {{.instancename}} 
+        --service-account $SERVICE_ACCOUNT 
+        --zone={{.zone}}
+        --scopes cloud-platform
+  instance:stop:
+    vars:
+      # Get instance name with its random number postfix
+      instancename:
+        sh: >
+          gcloud compute instances list --filter="name~{{.imagename}}" 
+          --format="value(selfLink.basename())" --limit=1
+    cmds:
+      - gcloud compute instances stop {{.instancename}} --zone {{.zone}}
+  instance:start:
+    vars:
+      # Get instance name with its random number postfix
+      instancename:
+        sh: >
+          gcloud compute instances list --filter="name~{{.imagename}}" 
+          --format="value(selfLink.basename())" --limit=1
+    cmds:
+      - gcloud compute instances start {{.instancename}} --zone {{.zone}}
+  fireweall:allow:
     desc: allow http port access
     cmds:
       - gcloud compute firewall-rules create http_allow --allow tcp:{{.cloudport}}
