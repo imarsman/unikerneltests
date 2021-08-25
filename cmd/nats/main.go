@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/imarsman/unikerneltests/cmd/nats/cloudlog"
 	"github.com/nats-io/nats-server/v2/server"
 	stand "github.com/nats-io/nats-streaming-server/server"
@@ -55,7 +53,6 @@ func main() {
 	// 	}
 	// }
 	cloudlog.Info("Hello from VM")
-	fmt.Println("Logging to syslog test")
 
 	natsServer.WaitForShutdown()
 }
