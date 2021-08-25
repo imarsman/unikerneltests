@@ -1,5 +1,10 @@
 # unikerneltests
 
+NOTE: this code does not work in a finished way. It is part of a learning and
+experimentation process to integrate the OPS tool which manages nanovms images
+and currently, the gloud CLI to set up images. This code and project are in a
+rough and unfinished state. Please don't use it for anything important.
+
 This repository is designed to be a collection of various tests of the Nanovms
 unikernel in the cloud. At the moment the cloud being tested is the Google
 Cloud. The AWS cloud looks to have similar overall supported instance API data
