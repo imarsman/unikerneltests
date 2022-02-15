@@ -29,9 +29,6 @@ func main() {
 	// overall API.
 	instance.WaitForMetadataService()
 
-	// time.Sleep(30 * time.Second)
-	// cloudlog.Startup()
-
 	natsOpts := stand.NewNATSOptions()
 	natsOpts.Port = nats.DefaultPort
 	// snopts.HTTPPort = 8222
